@@ -29,6 +29,7 @@ export default function AIQueryForm() {
     // } finally {
     //   setLoading(false);
     // }
+    setLoading(false);
   };
 
   return (
