@@ -11,25 +11,24 @@ export default function AIQueryForm() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setResponse(query);
-    // try {
-    //   // Replace this with your API endpoint
-    //   const res = await fetch("/api/ai-query", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ query }),
-    //   });
-    //   if (!res.ok) throw new Error("Failed to fetch AI response");
-    //   const data = await res.json();
-    //   setResponse(data.response);
-    // } catch (err) {
-    //   setError(err.message);
-    // } finally {
-    //   setLoading(false);
-    // }
-    setLoading(false);
+    try {
+      // Replace this with your API endpoint
+      const res = await fetch("http://127.0.0.1:5000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: query }),
+      });
+      if (!res.ok) throw new Error("Failed to fetch AI response");
+      const data = await res.json();
+      console.log(data.reply);
+      setResponse(data.reply);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
