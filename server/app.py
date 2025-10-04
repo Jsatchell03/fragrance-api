@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_restful import Api
 from flask_cors import CORS
-from agent import agent_executor
+
+from brain import recommend_text
 
 load_dotenv()
 
@@ -15,16 +16,16 @@ api = Api(app)
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    query = data.get("message", "")
+    query = data.get("message", "").strip()
 
     if not query:
         return jsonify({"reply": "⚠️ No input received."}), 400
 
     try:
-        response = agent_executor.invoke({"query": query})
-        return jsonify({"reply": response["output"]})
+        reply_text = recommend_text(query)
+        return jsonify({"reply": reply_text})
     except Exception as e:
-        return jsonify({"reply": f"❌ Agent error: {str(e)}"}), 500
+        return jsonify({"reply": f"❌ Server error: {str(e)}"}), 500
 
 
 if __name__ == "__main__":
