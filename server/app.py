@@ -11,11 +11,12 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
     query = data.get("message", "")
-    
+
     if not query:
         return jsonify({"reply": "⚠️ No input received."}), 400
 
@@ -24,7 +25,6 @@ def chat():
         return jsonify({"reply": response["output"]})
     except Exception as e:
         return jsonify({"reply": f"❌ Agent error: {str(e)}"}), 500
-
 
 
 if __name__ == "__main__":
